@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+    <head>
+        <meta charset="utf-8">
+        <title>智能小车遥控</title>
+        <style>
+            #switch   {
+                width:729px;
+                text-align: center;
+            }
+            header {
+                text-align:center;
+                padding:5px 0px 5px 5px;	 
+            }
+            section {
+                width:233px;
+                float:left;
+                padding:5px;	 	 
+            }
+            footer {
+                clear:both;
+                text-align:center;
+                padding:5px 0px 5px 5px;	 	 
+            }
+            button {
+                background-color:Transparent;
+                border-color:Transparent;
+                border-style:None;
+                outline: 0;
+            }
+            #action_info {
+                text-align:left;
+                padding-left:5px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="switch">
+            <header>
+                <button type="button" @click="car_control('up')">
+                    <img border="0" src="./images/up.jpg" />
+                </button>
+            </header>
+            <section>
+                <button type="button" @click="car_control('left')">
+                    <img border="0" src="./images/left.jpg" />
+                </button>
+            </section>
+            <section>
+                <button type="button" @click="car_control('start')">
+                    <img border="0" src="./images/start.jpg" />
+                </button>
+            </section>
+            <section>
+                <button type="button" @click="car_control('right')">
+                    <img border="0" src="./images/right.jpg" />
+                </button>
+            </section>
+            <footer>
+                <button type="button" @click="car_control('down')">
+                    <img border="0" src="./images/down.jpg" />
+                </button>
+            </footer>
+        
+            <div id="action_info" v-html="action_info"></div>
+        </div>
+        
+        <script src="https://unpkg.com/vue/dist/vue.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script type = "text/javascript">
+            new Vue({
+              el: '#switch',
+              data: {
+                action_info: '',
+                start_flag: false
+              },
+              methods: {
+                car_control: function(action) {
+                    console.log(action);
+                    info = "";
+                    switch(action){
+                        case "up":
+                            info = "前进";
+                            break;
+                        case "down":
+                            info = "后退";
+                            break;
+                        case "left":
+                            info = "左转";
+                            break;
+                        case "right":
+                            info = "右转";
+                            break;
+                        case "start":
+                            if (this.start_flag) {
+                                this.start_flag = false;
+                                info = "停止";
+                            } else {
+                                this.start_flag = true;
+                                info = "启动";
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    this.action_info = "<h1>"+info+"</h1>";
+                    axios
+                      .get('https://www.runoob.com/try/ajax/json_demo.json')
+                      .then(function (response) {
+                        console.log(response);
+                      })
+                      .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                      });
+                }
+              }
+            })
+        </script>
+    </body>
+    
+</html>
+
